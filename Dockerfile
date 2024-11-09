@@ -14,9 +14,14 @@ WORKDIR /app/my-tauri-app
 
 # Build the Tauri application
 RUN ls -la
+# Create the AppImage
+RUN pnpm tauri build --target=appimage
 
-RUN pnpm tauri build
+# Create an output directory for artifacts
+RUN mkdir -p /app/output
 
+# Copy the AppImage to the output directory
+RUN cp src-tauri/target/release/my-tauri-app-*.AppImage /app/output/
 
-# Run the Tauri application
-CMD ["pnpm", "tauri", "build"]
+# Set the command to keep the container running (optional)
+CMD ["tail", "-f", "/dev/null"]
