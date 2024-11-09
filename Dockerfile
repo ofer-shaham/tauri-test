@@ -6,17 +6,14 @@ WORKDIR /app
 # Install pnpm globally
 # RUN npm install -g pnpm
 
-# Create a new Tauri application with React and TypeScript
-RUN pnpm create tauri-app my-tauri-app --template react-ts
+RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry && \
+    cd my-tauri-app && pnpm install
 
 # Change directory to the newly created Tauri app
 WORKDIR /app/my-tauri-app
 
-# Install dependencies
-RUN pnpm install
-
 # Build the Tauri application
-RUN pnpm tauri build
+RUN ls -la
 
 # Run the Tauri application
 CMD ["pnpm", "tauri", "build"]
