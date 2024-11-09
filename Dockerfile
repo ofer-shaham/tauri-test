@@ -1,4 +1,4 @@
-FROM: ivangabriele/tauri:debian-bullseye-22 
+FROM ivangabriele/tauri:debian-bullseye-22 
 
 # Set the working directory
 WORKDIR /app
