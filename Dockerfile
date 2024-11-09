@@ -23,7 +23,7 @@ RUN pnpm tauri build --target=x86_64-unknown-linux-gnu
 
 # Create an output directory for artifacts
 RUN mkdir -p /app/output
-
+RUN ls -la
 # Copy the AppImage to the output directory
 RUN cp src-tauri/target/release/my-tauri-app-*.AppImage /app/output/
 
