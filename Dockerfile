@@ -15,5 +15,8 @@ WORKDIR /app/my-tauri-app
 # Build the Tauri application
 RUN ls -la
 
+RUN pnpm tauri build
+
+
 # Run the Tauri application
 CMD ["pnpm", "tauri", "build"]
