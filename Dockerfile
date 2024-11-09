@@ -3,6 +3,7 @@ FROM ivangabriele/tauri:debian-bullseye-22
 # Set the working directory
 WORKDIR /app
 
+RUN apt-get install libgtk-3-dev
 # Install pnpm globally
 # RUN npm install -g pnpm
 
