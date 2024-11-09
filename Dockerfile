@@ -14,6 +14,10 @@ WORKDIR /app/my-tauri-app
 
 # Build the Tauri application
 RUN ls -la
+
+# Add the AppImage target for Rust
+RUN rustup target add x86_64-unknown-linux-gnu
+
 # Create the AppImage
 RUN pnpm tauri build --target=appimage
 
