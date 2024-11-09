@@ -4,7 +4,7 @@ FROM ivangabriele/tauri:debian-bullseye-22
 WORKDIR /app
 
 # Install pnpm globally
-RUN npm install -g pnpm
+# RUN npm install -g pnpm
 
 # Create a new Tauri application with React and TypeScript
 RUN pnpm create tauri-app my-tauri-app --template react-ts
