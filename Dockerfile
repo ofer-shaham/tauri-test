@@ -19,7 +19,7 @@ RUN ls -la
 # RUN rustup target add x86_64-unknown-linux-gnu
 
 # Create the AppImage
-RUN pnpm tauri build  #--target=x86_64-unknown-linux-gnu
+RUN pnpm tauri build  
 
 # Create an output directory for artifacts
 RUN mkdir -p /app/output
