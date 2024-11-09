@@ -1,2 +1,3 @@
 # tauri-test
 .
+.
