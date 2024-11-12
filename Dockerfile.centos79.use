@@ -1,8 +1,5 @@
 FROM mostuf25562/tauri
 
-
-
-
 # Set the working directory
 # WORKDIR /app
 
