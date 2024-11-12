@@ -49,9 +49,9 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
 RUN cargo install tauri-cli
 
 # Verify installations
-RUN node --version && \
-    rustc --version && \
-    cargo --version
+# RUN node --version && \
+#    rustc --version && \
+#    cargo --version
 
 # Install pnpm globally
 RUN npm install -g pnpm
