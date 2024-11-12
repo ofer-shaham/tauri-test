@@ -62,7 +62,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -f Dockerfile.rocky86 -t mostuf25562/tauri .
+        run: docker build -f Dockerfile.centos79 -t mostuf25562/tauri .
 
       - name: Push Docker image
         run: docker push mostuf25562/tauri
