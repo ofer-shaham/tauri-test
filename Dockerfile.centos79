@@ -7,6 +7,7 @@ ARG NODE_VERSION=v18.20.4
 # Set bash as the default shell
 SHELL ["/bin/bash", "-c"]
 
+# cool
 # Update and install dependencies
 RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && \
     sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Base.repo && \
