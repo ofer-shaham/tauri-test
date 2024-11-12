@@ -2,6 +2,7 @@ FROM mostuf25562/tauri
 
 # Set the working directory
 # WORKDIR /app
+WORKDIR /home/docker
 
 #################### delete: RUN apt-get install libgtk-3-dev
 # Install pnpm globally
