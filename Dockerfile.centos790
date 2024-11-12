@@ -50,21 +50,4 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
 # Install Tauri CLI
 RUN cargo install tauri-cli
 
-# Verify installations
-# RUN node --version && \
-#    rustc --version && \
-#    cargo --version
-
-# Install pnpm globally
-RUN npm install -g pnpm
-
-# Create Tauri project with React TypeScript template
-RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry && \
-    cd my-tauri-app && pnpm install
-# Set working directory to the project
-WORKDIR /home/docker/my-tauri-app
-
-RUN cd src-tauri && cargo build
-
-# Set default command to bash
 CMD ["/bin/bash"]
