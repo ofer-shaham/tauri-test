@@ -19,6 +19,7 @@ jobs:
 
       - name: Build and Push Docker image for centos79
         run: |
+          ls -la 
           IMAGE_TAG="mostuf25562/tauri"
           docker build -f Dockerfile.centos79 -t $IMAGE_TAG .
           echo "Built image $IMAGE_TAG"
