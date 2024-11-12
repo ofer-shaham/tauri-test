@@ -1,11 +1,10 @@
 ARG CENTOS_VERSION=7.9.2009
-FROM centos:$CENTOS_VERSION
-
-SHELL ["/bin/bash", "-c"]
-
+FROM centos:${CENTOS_VERSION}
 ARG NVM_VERSION=0.39.2
-ARG NODE_VERSION=18.12
+ARG NODE_VERSION=18
 
+# Set bash as the default shell
+SHELL ["/bin/bash", "-c"]
 
 # Update and install dependencies
 RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && \
@@ -24,28 +23,45 @@ RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && 
         file \
         librsvg2-devel
 
-# Install Node.js from NodeSource
-RUN curl -fsSL https://rpm.nodesource.com/setup_18.x | bash - && \
-    yum install -y nodejs
-
-RUN useradd -u 1000 docker
+# Create user and set up environment
+RUN useradd -m -u 1000 docker
 USER docker
-ENV HOME=/app
+WORKDIR /home/docker
 
+# Set environment variables
+ENV HOME=/home/docker \
+    NVM_DIR=/home/docker/.nvm \
+    PATH=/home/docker/.nvm/versions/node/v${NODE_VERSION}/bin:/home/docker/.cargo/bin:$PATH \
+    SHELL=/bin/bash
 
-# Install Node.js from NodeSource
-RUN curl -fsSL https://rpm.nodesource.com/setup_18.x | bash - && \
-    yum install -y nodejs
-
-# Verify the installation
-RUN node -v && npm -v  # Check Node.js and npm versions
-
+# Install NVM and Node.js
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash && \
+    source $NVM_DIR/nvm.sh && \
+    nvm install ${NODE_VERSION} && \
+    nvm use ${NODE_VERSION} && \
+    nvm alias default ${NODE_VERSION}
 
 # Install Rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-ENV PATH=$HOME/.cargo/bin:$PATH
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    source $HOME/.cargo/env
 
 # Install Tauri CLI
 RUN cargo install tauri-cli
-##########################################
+
+# Verify installations
+RUN node --version && \
+    rustc --version && \
+    cargo --version
+
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Create Tauri project with React TypeScript template
+RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry && \
+    cd my-tauri-app && pnpm install
+
+# Set working directory to the project
+WORKDIR /home/docker/my-tauri-app
+
+# Set default command to bash
+CMD ["/bin/bash"]
