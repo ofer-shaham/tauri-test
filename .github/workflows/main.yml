@@ -17,15 +17,15 @@ jobs:
         with:
           fetch-depth: 2  # Fetch the last 2 commits to compare changes
 
-      # - name: Check for Dockerfile changes
-      #   id: check_changes
-      #   run: |
-      #     git fetch origin main
-      #     DOCKERFILE1_CHANGED=$(git diff --name-only HEAD^ HEAD | grep -q "Dockerfile.centos79" && echo "true" || echo "false")
-      #     DOCKERFILE2_CHANGED=$(git diff --name-only HEAD^ HEAD | grep -q "Dockerfile.centos79.use" && echo "true" || echo "false")
+      - name: Check for Dockerfile changes
+        id: check_changes
+        run: |
+          git fetch origin main
+          DOCKERFILE1_CHANGED=$(git diff --name-only HEAD^ HEAD | grep -q "Dockerfile.centos79") # && echo "true" || echo "false"
+          DOCKERFILE2_CHANGED=$(git diff --name-only HEAD^ HEAD | grep -q "Dockerfile.centos79.use" ) #&& echo "true" || echo "false"
           
-      #     echo "dockerfile1_changed=$DOCKERFILE1_CHANGED" >> $GITHUB_OUTPUT
-      #     echo "dockerfile2_changed=$DOCKERFILE2_CHANGED" >> $GITHUB_OUTPUT
+          echo "dockerfile1_changed=$DOCKERFILE1_CHANGED" >> $GITHUB_OUTPUT
+          echo "dockerfile2_changed=$DOCKERFILE2_CHANGED" >> $GITHUB_OUTPUT
 
       - name: Log in to Docker Hub
         # if: steps.check_changes.outputs.dockerfile1_changed == 'true' || steps.check_changes.outputs.dockerfile2_changed == 'true'
