@@ -59,9 +59,10 @@ RUN npm install -g pnpm
 # Create Tauri project with React TypeScript template
 RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry && \
     cd my-tauri-app && pnpm install
-
 # Set working directory to the project
 WORKDIR /home/docker/my-tauri-app
+
+RUN cd src-tauri && cargo tauri build
 
 # Set default command to bash
 CMD ["/bin/bash"]
