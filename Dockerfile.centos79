@@ -1,15 +1,13 @@
-ARG CENTOS_VERSION=7.9.2009
-FROM centos:$CENTOS_VERSION
+# Dockerfile.centos79
 
+# Use CentOS as the base image
+FROM centos:7.9.2009
 
 ARG NVM_VERSION=0.39.2
 ARG NODE_VERSION=18.12
-#
 
 # Update and install dependencies
-RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && \
-    sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Base.repo && \
-    yum -y update && \
+RUN yum -y update && \
     yum install -y epel-release && \
     yum install -y \
         webkitgtk4-devel \
@@ -23,21 +21,30 @@ RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && 
         file \
         librsvg2-devel
 
-RUN useradd -u 1000 docker
+# Create a user with a home directory
+RUN useradd -u 1000 -m docker
 USER docker
 ENV HOME=/home/docker
 
+# Set the working directory to the user's home
+WORKDIR $HOME
+
 # Install NVM
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash && \
-    source $HOME/.nvm/nvm.sh && \
-    nvm install $NODE_VERSION && \
-    nvm use node
+    echo "export NVM_DIR=\"$HOME/.nvm\"" >> $HOME/.bashrc && \
+    echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $HOME/.bashrc
+
+# Load NVM and install Node.js
+RUN bash -c "source $HOME/.bashrc && nvm install $NODE_VERSION"
+
+# Update PATH to include NVM and Node.js
+ENV PATH=$HOME/.nvm/versions/node/v$NODE_VERSION/bin:$PATH
 
 # Install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-ENV PATH=$HOME/.nvm/versions/node/v$NODE_VERSION/bin:$PATH
-ENV PATH=$HOME/.cargo/bin:$PATH
+# Set the working directory for the application
+RUN mkdir -p $HOME/my_app_directory
 
-# Install Tauri CLI
-RUN cargo install tauri-cli
+# Change to the application directory
+WORKDIR $HOME/my_app_directory
