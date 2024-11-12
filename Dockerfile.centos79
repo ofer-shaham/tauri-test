@@ -29,10 +29,13 @@ USER docker
 ENV HOME=/app
 
 
+# Install Node.js from NodeSource
+RUN curl -fsSL https://rpm.nodesource.com/setup_18.x | bash - && \
+    yum install -y nodejs
 
-# Install Node.js
-RUN curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
-RUN dnf install -y nodejs
+# Verify the installation
+RUN node -v && npm -v  # Check Node.js and npm versions
+
 
 # Install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
