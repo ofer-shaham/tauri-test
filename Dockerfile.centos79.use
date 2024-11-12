@@ -1,7 +1,7 @@
 # Dockerfile.centos79.use
 
 # Use the first Dockerfile's image as the base
-FROM mostuf25562/tauri  # Replace with the appropriate image name and tag from the first Dockerfile
+FROM mostuf25562/tauri:1  # Replace with the appropriate image name and tag from the first Dockerfile
 
 
 # Set the working directory to the user's home directory
