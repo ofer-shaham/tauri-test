@@ -13,25 +13,25 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v2
     
-        - name: Check for Dockerfile changes
-          id: check_dockerfile
-          run: |
-            git fetch origin main
-            DOCKERFILE1_CHANGED=$(git diff --name-only origin/main | grep -q "Dockerfile.centos79" && echo "true" || echo "false")
-            DOCKERFILE2_CHANGED=$(git diff --name-only origin/main | grep -q "Dockerfile.centos79.use" && echo "true" || echo "false")
+        # - name: Check for Dockerfile changes
+        #   id: check_dockerfile
+        #   run: |
+        #     git fetch origin main
+        #     DOCKERFILE1_CHANGED=$(git diff --name-only origin/main | grep -q "Dockerfile.centos79" && echo "true" || echo "false")
+        #     DOCKERFILE2_CHANGED=$(git diff --name-only origin/main | grep -q "Dockerfile.centos79.use" && echo "true" || echo "false")
             
-            echo "dockerfile1_changed=$DOCKERFILE1_CHANGED" >> $GITHUB_ENV
-            echo "dockerfile2_changed=$DOCKERFILE2_CHANGED" >> $GITHUB_ENV
+        #     echo "dockerfile1_changed=$DOCKERFILE1_CHANGED" >> $GITHUB_ENV
+        #     echo "dockerfile2_changed=$DOCKERFILE2_CHANGED" >> $GITHUB_ENV
     
         - name: Log in to Docker Hub
-          if: env.dockerfile1_changed == 'true' || env.dockerfile2_changed == 'true'
+          # if: env.dockerfile1_changed == 'true' || env.dockerfile2_changed == 'true'
           uses: docker/login-action@v3
           with:
             username: ${{ vars.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_PASSWORD }}
     
         - name: Build and Push Docker image for centos79
-          if: env.dockerfile1_changed == 'true'
+          # if: env.dockerfile1_changed == 'true'
           run: |
             IMAGE_TAG="mostuf25562/tauri:1"
             docker build -f Dockerfile.centos79 -t $IMAGE_TAG .
