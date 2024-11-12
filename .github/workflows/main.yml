@@ -39,7 +39,7 @@ jobs:
         #     docker push $IMAGE_TAG
     
         - name: Build and Push Docker image for centos79.use
-          if: env.dockerfile2_changed == 'true'
+          # if: env.dockerfile2_changed == 'true'
           run: |
             IMAGE_TAG_USE="mostuf25562/tauri.use:2"
             docker build -f Dockerfile.centos79.use -t $IMAGE_TAG_USE .
