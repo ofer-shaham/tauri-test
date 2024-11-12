@@ -1,17 +1,19 @@
 # Dockerfile.centos79.use
 
 # Use the first Dockerfile's image as the base
-FROM  mostuf25562/tauri:1
+FROM mostuf25562/tauri:1  # Replace with the appropriate image name and tag from the first Dockerfile
 
-# Set the user and home directory
-USER docker
-ENV HOME=/home/docker
-
-# Change to the newly created Tauri app directory
-WORKDIR $HOME/my_app_directory/my-tauri-app
+# Set the working directory to the user's home directory
+WORKDIR $HOME  # This sets the working directory to /home/docker
 
 # Install pnpm globally
 RUN npm install -g pnpm
+
+# Create a new Tauri app using pnpm
+RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
+
+# Change directory to the newly created Tauri app
+WORKDIR $HOME/my-tauri-app  # This sets the working directory to /home/docker/my-tauri-app
 
 # Install dependencies for the Tauri app
 RUN pnpm install
