@@ -1,0 +1,55 @@
+# Use CentOS 8 as the base image
+FROM centos:8
+
+# Set environment variables
+ENV NVM_DIR=/home/docker/.nvm
+ENV NODE_VERSION=18
+ENV CARGO_HOME=/home/docker/.cargo
+
+# Create a user to run the application
+RUN useradd -m docker
+
+# Switch to the docker user
+USER docker
+WORKDIR /home/docker
+
+# Install development tools and dependencies
+RUN sudo dnf update -y && \
+    sudo dnf groupinstall "Development Tools" -y && \
+    sudo dnf install -y epel-release && \
+    sudo dnf install -y \
+        gcc-c++ \
+        make \
+        cmake \
+        libX11-devel \
+        libXcomposite-devel \
+        libXcursor-devel \
+        libXdamage-devel \
+        libXext-devel \
+        libXrandr-devel \
+        libXi-devel \
+        libXinerama-devel \
+        libXss-devel \
+        libXScrnSaver-devel \
+        libXrender-devel \
+        libXtst-devel \
+        curl && \
+    sudo dnf clean all
+
+# Install Node.js using NodeSource
+RUN curl -fsSL https://rpm.nodesource.com/setup_$NODE_VERSION.x | bash - && \
+    sudo dnf install -y nodejs
+
+# Install Rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    echo 'source $HOME/.cargo/env' >> /home/docker/.bashrc
+
+# Install Tauri CLI
+RUN npm install -g tauri-cli
+
+# Create volumes for caching Node.js modules and Cargo packages
+VOLUME ["/home/docker/.npm"]
+VOLUME ["/home/docker/.cargo"]
+
+# Set the default command to bash
+CMD ["/bin/bash"]
