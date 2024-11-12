@@ -1,0 +1,29 @@
+FROM centos:centos7.3.1611
+
+RUN yum install -y \
+  # notice I'm using an old version of webkit. It works!
+  webkitgtk4-devel \
+  openssl-devel \
+  curl \
+  wget \
+  squashfs-tools \
+  gcc \
+  gcc-c++ \
+  make \
+  file \
+  # for scp transfer of build
+  openssh-clients \
+  openssh && \
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash && \
+. $HOME/.nvm/nvm.sh && \
+nvm install node --latest-npm && \
+nvm use node && \
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+. $HOME/.cargo/env && \
+cargo --help && echo $(rustc --version) && \
+# do not use downloaded packages of tauri - you must build it yourself in this environment for correct GLIBC version
+cargo install tauri-cli --vers 1.0.0-beta.5 && \
+cargo install tauri-macros --vers 0.0.0
+
+# now instead you build your appimage like:
+# cargo tauri build --debug --verbose
