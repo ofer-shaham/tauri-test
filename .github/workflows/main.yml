@@ -66,3 +66,6 @@ jobs:
 
       - name: Push Docker image
         run: docker push mostuf25562/tauri
+
+      - name: test image
+        run: docker run mostuf25562/tauri ls -la
