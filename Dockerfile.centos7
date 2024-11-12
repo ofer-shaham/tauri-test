@@ -39,30 +39,5 @@ RUN \
 ENV PATH=/root/.nvm/versions/node/v14.20.0/bin:$PATH
 ENV PATH=/root/.cargo/bin:$PATH
 
-
-# RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry && \
-#     cd my-tauri-app && pnpm install
-
-# # Change directory to the newly created Tauri app
-# WORKDIR /app/my-tauri-app
-
-# # Build the Tauri application
-# RUN ls -la
-
-# # Add the AppImage target for Rust
-# # RUN rustup target add x86_64-unknown-linux-gnu
-
-# # Create the AppImage
-# RUN pnpm tauri build  
-
-# # Create an output directory for artifacts
-# RUN mkdir -p /app/output
-# RUN ls -la  
-# RUN ls -la  src-tauri/
-# # Copy the AppImage to the output directory
-# RUN cp src-tauri/target/release/my-tauri-app-*.AppImage /app/output/
-
-# # Set the command to keep the container running (optional)
-# CMD ["tail", "-f", "/dev/null"]
 # now instead you build your appimage like:
 # cargo tauri build --debug --verbose
