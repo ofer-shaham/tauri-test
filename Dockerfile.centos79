@@ -1,6 +1,7 @@
 ARG CENTOS_VERSION=7.9.2009
 FROM centos:$CENTOS_VERSION
 
+
 ARG NVM_VERSION=0.39.2
 ARG NODE_VERSION=18.12
 
@@ -23,7 +24,7 @@ RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && 
 
 RUN useradd -u 1000 docker
 USER docker
-ENV HOME=/home/docker
+ENV HOME=/app
 
 # Install NVM
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash && \
