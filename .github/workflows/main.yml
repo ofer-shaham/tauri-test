@@ -68,4 +68,8 @@ jobs:
         run: docker push mostuf25562/tauri
 
       - name: test image
-        run: docker run mostuf25562/tauri ls -la
+        run: docker build -f Dockerfile.centos79.use -t mostuf25562/tauri .
+
+      - name: Push Docker image
+        run: docker push mostuf25562/tauri
+        
