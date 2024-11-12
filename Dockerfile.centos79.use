@@ -1,32 +1,27 @@
-FROM mostuf25562/tauri
+# Dockerfile.centos79.use
 
-# Set the working directory
-# WORKDIR /app/my-tauri-app
-WORKDIR /home/docker
+# Use the first Dockerfile's image as the base
+FROM  mostuf25562/tauri:1
 
-#################### delete: RUN apt-get install libgtk-3-dev
+# Set the user and home directory
+USER docker
+ENV HOME=/home/docker
+
+# Change to the newly created Tauri app directory
+WORKDIR $HOME/my_app_directory/my-tauri-app
+
 # Install pnpm globally
 RUN npm install -g pnpm
 
-RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry && \
-    cd my-tauri-app && pnpm install
-
-# Change directory to the newly created Tauri app
-WORKDIR /home/docker/app/my-tauri-app
+# Install dependencies for the Tauri app
+RUN pnpm install
 
 # Build the Tauri application
-RUN ls -la
-
-# Add the AppImage target for Rust
-# RUN rustup target add x86_64-unknown-linux-gnu
-
-# Create the AppImage
 RUN pnpm tauri build  
 
 # Create an output directory for artifacts
 RUN mkdir -p /app/output
-RUN ls -la  
-RUN ls -la  src-tauri/
+
 # Copy the AppImage to the output directory
 RUN cp src-tauri/target/release/my-tauri-app-*.AppImage /app/output/
 
