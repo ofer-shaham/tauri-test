@@ -7,96 +7,41 @@ on:
       - main  # Change this to your branch name if different
 
 jobs:
-  # raspberry_pi_compile:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-      
-  #     - uses: pguyot/arm-runner-action@v2.5.2
-  #       with:
-  #         base_image: https://dietpi.com/downloads/images/DietPi_RPi-ARMv8-Bullseye.img.xz
-  #         cpu: cortex-a53
-  #         bind_mount_repository: true
-  #         image_additional_mb: 10240
-  #         optimize_image: false
-  #         commands: |
-  #           # Rust complains (rightly) that $HOME doesn't match eid home
-  #           export HOME=/root
-  #           # Workaround to CI worker being stuck on Updating crates.io index
-  #           export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
-  #           # Install setup prerequisites
-  #           apt-get update -y --allow-releaseinfo-change
-  #           apt-get upgrade -y
-  #           apt-get autoremove -y
-  #           apt-get install -y curl
-  #           curl https://sh.rustup.rs -sSf | sh -s -- -y
-  #           . "$HOME/.cargo/env"
-  #           curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash
-  #           # Install framework specific packages
-  #           apt-get install -y nodejs
-  #           npm install next@latest react@latest react-dom@latest eslint-config-next@latest
-  #           # Install build tools and Tauri CLI requirements
-  #           apt-get install -y libwebkit2gtk-4.0-dev build-essential wget libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
-  #           cargo install tauri-cli
-  #           # Install frontend dependencies
-  #           npm install
-  #           # Build the application
-  #           cargo tauri build
-
-  #     - name: Upload deb bundle
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: Debian Bundle
-  #         path: ${{ github.workspace }}/target/release/bundle/deb/tauri_1.4_arm64.deb
-
-  docker_build_and_push:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-  
-      - name: Check for Dockerfile changes
-        id: check_dockerfile
-        run: |
-          git fetch origin main
-          if git diff --name-only origin/main | grep -q "Dockerfile.centos79"; then
-            echo "Dockerfile.centos79 has changed."
-            echo "changed=true" >> $GITHUB_ENV
-          fi
-          if git diff --name-only origin/main | grep -q "Dockerfile.centos79.use"; then
-            echo "Dockerfile.centos79.use has changed."
-            echo "changed=true" >> $GITHUB_ENV
-          fi
-  
-      - name: Log in to Docker Hub
-        if: env.changed == 'true'
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-  
-      - name: Build Docker image
-        if: env.changed == 'true'
-        run: |
-          IMAGE_TAG="mostuf25562/tauri"
-          docker build -f Dockerfile.centos79 -t $IMAGE_TAG .
-          echo "Built image $IMAGE_TAG"
-  
-      - name: Push Docker image
-        if: env.changed == 'true'
-        run: |
-          IMAGE_TAG="mostuf25562/tauri"
-          docker push $IMAGE_TAG
-  
-      - name: Build Docker image for use
-        if: env.changed == 'true'
-        run: |
-          IMAGE_TAG_USE="mostuf25562/tauri.use:2"
-          docker build -f Dockerfile.centos79.use -t $IMAGE_TAG_USE .
-          echo "Built image $IMAGE_TAG_USE"
-  
-      - name: Push Docker image for use
-        if: env.changed == 'true'
-        run: |
-          IMAGE_TAG_USE="mostuf25562/tauri.use:2"
-          docker push $IMAGE_TAG_USE
+    docker_build_and_push:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+    
+        - name: Check for Dockerfile changes
+          id: check_dockerfile
+          run: |
+            git fetch origin main
+            DOCKERFILE1_CHANGED=$(git diff --name-only origin/main | grep -q "Dockerfile.centos79" && echo "true" || echo "false")
+            DOCKERFILE2_CHANGED=$(git diff --name-only origin/main | grep -q "Dockerfile.centos79.use" && echo "true" || echo "false")
+            
+            echo "dockerfile1_changed=$DOCKERFILE1_CHANGED" >> $GITHUB_ENV
+            echo "dockerfile2_changed=$DOCKERFILE2_CHANGED" >> $GITHUB_ENV
+    
+        - name: Log in to Docker Hub
+          if: env.dockerfile1_changed == 'true' || env.dockerfile2_changed == 'true'
+          uses: docker/login-action@v3
+          with:
+            username: ${{ vars.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+    
+        - name: Build and Push Docker image for centos79
+          if: env.dockerfile1_changed == 'true'
+          run: |
+            IMAGE_TAG="mostuf25562/tauri:1"
+            docker build -f Dockerfile.centos79 -t $IMAGE_TAG .
+            echo "Built image $IMAGE_TAG"
+            docker push $IMAGE_TAG
+    
+        - name: Build and Push Docker image for centos79.use
+          if: env.dockerfile2_changed == 'true'
+          run: |
+            IMAGE_TAG_USE="mostuf25562/tauri.use:2"
+            docker build -f Dockerfile.centos79.use -t $IMAGE_TAG_USE .
+            echo "Built image $IMAGE_TAG_USE"
+            docker push $IMAGE_TAG_USE
