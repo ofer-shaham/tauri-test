@@ -13,8 +13,8 @@ RUN npm install -g pnpm
 RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
 
 # Change directory to the newly created Tauri app
-WORKDIR $HOME/my-tauri-app  # This sets the working directory to /home/docker/my-tauri-app
-
+WORKDIR $HOME/my-tauri-app  # This sets the working directory to /app/my-tauri-app
+RUN echo '$HOME' $HOME
 # Install dependencies for the Tauri app
 RUN pnpm install
 
