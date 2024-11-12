@@ -4,6 +4,7 @@ FROM centos:$CENTOS_VERSION
 
 ARG NVM_VERSION=0.39.2
 ARG NODE_VERSION=18.12
+#
 
 # Update and install dependencies
 RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && \
