@@ -28,16 +28,15 @@ RUN useradd -u 1000 docker
 USER docker
 ENV HOME=/app
 
-# Install NVM
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash && \
-    source $HOME/.nvm/nvm.sh && \
-    nvm install $NODE_VERSION && \
-    nvm use node
+
+
+# Install Node.js
+RUN curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
+RUN dnf install -y nodejs
 
 # Install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-ENV PATH=$HOME/.nvm/versions/node/v$NODE_VERSION/bin:$PATH
 ENV PATH=$HOME/.cargo/bin:$PATH
 
 # Install Tauri CLI
