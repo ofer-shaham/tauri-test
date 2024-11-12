@@ -62,7 +62,7 @@ RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry 
 # Set working directory to the project
 WORKDIR /home/docker/my-tauri-app
 
-RUN cd src-tauri && cargo tauri build
+RUN cd src-tauri && cargo build
 
 # Set default command to bash
 CMD ["/bin/bash"]
