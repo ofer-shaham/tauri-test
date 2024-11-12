@@ -23,20 +23,20 @@ jobs:
         #     echo "dockerfile1_changed=$DOCKERFILE1_CHANGED" >> $GITHUB_ENV
         #     echo "dockerfile2_changed=$DOCKERFILE2_CHANGED" >> $GITHUB_ENV
     
-        - name: Log in to Docker Hub
-          # if: env.dockerfile1_changed == 'true' || env.dockerfile2_changed == 'true'
-          uses: docker/login-action@v3
-          with:
-            username: ${{ vars.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKER_PASSWORD }}
+        # - name: Log in to Docker Hub
+        #   # if: env.dockerfile1_changed == 'true' || env.dockerfile2_changed == 'true'
+        #   uses: docker/login-action@v3
+        #   with:
+        #     username: ${{ vars.DOCKER_USERNAME }}
+        #     password: ${{ secrets.DOCKER_PASSWORD }}
     
-        - name: Build and Push Docker image for centos79
-          # if: env.dockerfile1_changed == 'true'
-          run: |
-            IMAGE_TAG="mostuf25562/tauri:1"
-            docker build -f Dockerfile.centos79 -t $IMAGE_TAG .
-            echo "Built image $IMAGE_TAG"
-            docker push $IMAGE_TAG
+        # - name: Build and Push Docker image for centos79
+        #   # if: env.dockerfile1_changed == 'true'
+        #   run: |
+        #     IMAGE_TAG="mostuf25562/tauri:1"
+        #     docker build -f Dockerfile.centos79 -t $IMAGE_TAG .
+        #     echo "Built image $IMAGE_TAG"
+        #     docker push $IMAGE_TAG
     
         - name: Build and Push Docker image for centos79.use
           if: env.dockerfile2_changed == 'true'
