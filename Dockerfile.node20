@@ -26,5 +26,5 @@ RUN bash -c "source ~/.nvm/nvm.sh && pnpm install"
 WORKDIR /app/my-tauri-app/src-tauri
 
 # Build the Tauri application
-RUN bash -c "source ~/.nvm/nvm.sh && cargo tauri build"
+RUN bash -c "source ~/.nvm/nvm.sh && cargo tauri build --target appimage"
 
