@@ -4,23 +4,27 @@ FROM liudonghua123/tauri-build:latest
 # Set the working directory
 WORKDIR /app
 
+# Install nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+
+# Load nvm and install Node.js
+RUN bash -c "source ~/.nvm/nvm.sh && nvm install 20.18.0 && nvm use 20.18.0"
+
 # Install pnpm globally
-RUN npm install -g pnpm
+RUN bash -c "source ~/.nvm/nvm.sh && npm install -g pnpm"
 
 # Create a new Tauri application using the specified template
-RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
+RUN bash -c "source ~/.nvm/nvm.sh && pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry"
 
 # Move into the Tauri application directory
 WORKDIR /app/my-tauri-app
 
 # Install project dependencies
-RUN pnpm install
+RUN bash -c "source ~/.nvm/nvm.sh && pnpm install"
 
 # Move into the src-tauri directory
 WORKDIR /app/my-tauri-app/src-tauri
 
 # Build the Tauri application
-RUN cargo tauri build
+RUN bash -c "source ~/.nvm/nvm.sh && cargo tauri build"
 
-# Optional: Command to run the built application (if needed)
-# CMD ["/app/my-tauri-app/target/release/bundle/tauri/release/my-tauri-app"]
