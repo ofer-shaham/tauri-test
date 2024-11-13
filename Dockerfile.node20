@@ -1,0 +1,26 @@
+# Use the Tauri build image
+FROM liudonghua123/tauri-build:latest
+
+# Set the working directory
+WORKDIR /app
+
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Create a new Tauri application using the specified template
+RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
+
+# Move into the Tauri application directory
+WORKDIR /app/my-tauri-app
+
+# Install project dependencies
+RUN pnpm install
+
+# Move into the src-tauri directory
+WORKDIR /app/my-tauri-app/src-tauri
+
+# Build the Tauri application
+RUN cargo tauri build
+
+# Optional: Command to run the built application (if needed)
+# CMD ["/app/my-tauri-app/target/release/bundle/tauri/release/my-tauri-app"]
