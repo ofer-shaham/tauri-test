@@ -9,15 +9,12 @@ ENV CARGO_HOME=/home/docker/.cargo
 # Create a user to run the application
 RUN useradd -m docker
 
-# Switch to the docker user
-USER docker
-WORKDIR /home/docker
 
 # Install development tools and dependencies
-RUN sudo dnf update -y && \
-    sudo dnf groupinstall "Development Tools" -y && \
-    sudo dnf install -y epel-release && \
-    sudo dnf install -y \
+RUN   dnf update -y && \
+      dnf groupinstall "Development Tools" -y && \
+      dnf install -y epel-release && \
+      dnf install -y \
         gcc-c++ \
         make \
         cmake \
@@ -34,7 +31,12 @@ RUN sudo dnf update -y && \
         libXrender-devel \
         libXtst-devel \
         curl && \
-    sudo dnf clean all
+      dnf clean all
+
+
+# Switch to the docker user
+USER docker
+WORKDIR /home/docker
 
 # Install Node.js using NodeSource
 RUN curl -fsSL https://rpm.nodesource.com/setup_$NODE_VERSION.x | bash - && \
