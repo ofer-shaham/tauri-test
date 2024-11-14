@@ -43,8 +43,8 @@ RUN cargo new --bin my-tauri-app && cd my-tauri-app && \
 WORKDIR /app/my-tauri-app
 
 # Build the Tauri application
+RUN cargo tauri info
 RUN cargo tauri build
 
 # Optional: Command to run the built application (if needed)
 # CMD ["/app/my-tauri-app/target/release/bundle/tauri/release/my-tauri-app"]
-ofers@ricvl2-ofers:/dv/scratch4/users/ofers/DOCKER/glibc> 
