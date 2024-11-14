@@ -4,7 +4,7 @@ FROM fedora:29
                                                                                                                                                                                    
 # Set environment variables
 ENV RUST_VERSION=1.81.0
-ENV TAURI_CLI_VERSION=2.0.3
+ENV TAURI_CLI_VERSION=1.7.0
 ENV NODE_VERSION=16
 
 # Install necessary dependencies for Tauri and Node.js
