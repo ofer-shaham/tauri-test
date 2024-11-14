@@ -1,0 +1,50 @@
+
+# Use Fedora 29 as the base image                                                                                                                                                  
+FROM fedora:29                                                                                                                                                                     
+                                                                                                                                                                                   
+# Set environment variables
+ENV RUST_VERSION=1.81.0
+ENV TAURI_CLI_VERSION=2.0.3
+ENV NODE_VERSION=16
+
+# Install necessary dependencies for Tauri and Node.js
+RUN dnf update -y && \
+    dnf install -y \
+        curl \
+        webkit2gtk3-devel \
+        libappindicator-gtk3-devel \
+        openssl-devel \
+        gcc \
+        gcc-c++ \
+        make \
+        librsvg2-devel && \
+    dnf clean all
+
+# Install Node.js 16
+RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash - && \
+    dnf install -y nodejs && \
+    dnf clean all
+
+# Install Rust using rustup
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# Set the PATH for Rust
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Install Tauri CLI
+RUN cargo install tauri-cli --version=${TAURI_CLI_VERSION}
+
+# Create a new Tauri application
+WORKDIR /app
+RUN cargo new --bin my-tauri-app && cd my-tauri-app && \
+    echo '[package]\nname = "my-tauri-app"\nversion = "0.1.0"\nedition = "2021"\n\n[dependencies]\ntauri = { version = "2.0.3" }' > my-tauri-app/Cargo.toml
+
+# Move into the Tauri application directory
+WORKDIR /app/my-tauri-app
+
+# Build the Tauri application
+RUN cargo tauri build
+
+# Optional: Command to run the built application (if needed)
+# CMD ["/app/my-tauri-app/target/release/bundle/tauri/release/my-tauri-app"]
+ofers@ricvl2-ofers:/dv/scratch4/users/ofers/DOCKER/glibc> 
