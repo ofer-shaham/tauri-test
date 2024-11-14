@@ -51,5 +51,6 @@ RUN \
     # do not use downloaded packages of tauri - you must build it yourself in this environment for correct GLIBC version
     cargo install tauri-cli --version $TAURI_VERSION
 
+RUN cargo tauri info
 # now instead you build your appimage like:
 # cargo tauri build --debug --verbose
