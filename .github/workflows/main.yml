@@ -62,7 +62,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -f Dockerfile.alphine -t mostuf25562/tauri:2 .
+        run: docker build -f Dockerfile.ubuntu1804_2 -t mostuf25562/tauri:2 .
 
       - name: Push Docker image
         run: docker push mostuf25562/tauri:2
