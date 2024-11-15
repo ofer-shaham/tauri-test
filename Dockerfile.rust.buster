@@ -58,5 +58,5 @@ RUN if [ "$INPUT_TARGET" = "x86_64-unknown-linux-gnu" ]; then \
     fi
 
 # Copy build script and run it
-RUN cargo install tauri
+RUN cargo install tauri-cli
 RUN cargo tauri info
