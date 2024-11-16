@@ -22,7 +22,7 @@ RUN yarn create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
 RUN sed -i 's/beforeBuildCommand/beforeBuildCommand1/g' /app/my-tauri-app/src-tauri/tauri.conf.json
 
 # Change directory to the newly created Tauri app
-WORKDIR /app/my-tauri-app/src-tauri  # This sets the working directory to /app/my-tauri-app
+WORKDIR /app/my-tauri-app/src-tauri
 
 RUN echo '$PWD' $PWD
 RUN ls -la
