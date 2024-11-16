@@ -15,18 +15,18 @@ RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION
     rm "node-v${NODEJS_VERSION}-linux-x64.tar.xz"
 
 # Install pnpm globally
-RUN npm install -g pnpm
+RUN npm install -g yarn
 
 # Create a new Tauri app using pnpm
-RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
+RUN yarn create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
 
 # Change directory to the newly created Tauri app
 WORKDIR $HOME/my-tauri-app  # This sets the working directory to /app/my-tauri-app
 RUN echo '$HOME' $HOME
 # Install dependencies for the Tauri app
-RUN pnpm install
+RUN yarn install
 
 # Build the Tauri application
-RUN pnpm tauri build  
+RUN yarn tauri build  
 
 # WORKDIR /root/app
