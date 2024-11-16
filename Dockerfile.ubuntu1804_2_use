@@ -11,7 +11,7 @@ ARG NODEJS_VERSION=16.20.2
 WORKDIR /tmp
 RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.xz" && \
     tar -xJf "node-v${NODEJS_VERSION}-linux-x64.tar.xz" -C /usr/local --strip-components=1 && \
-    npm install --global yarn pnpm json && \
+    npm install --global yarn json && \
     rm "node-v${NODEJS_VERSION}-linux-x64.tar.xz"
 
 # Install pnpm globally
