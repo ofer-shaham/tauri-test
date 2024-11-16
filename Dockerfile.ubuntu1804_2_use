@@ -29,6 +29,6 @@ RUN ls -la
 # RUN yarn install
 
 # Build the Tauri application
-RUN yarn tauri build  
+RUN cargo tauri build  
 
 # WORKDIR /root/app
