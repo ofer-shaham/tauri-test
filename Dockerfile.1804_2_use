@@ -1,0 +1,32 @@
+FROM mosutf25562/tauri:1
+###############################
+
+
+# ARG RUST_VERSION=1.71.1
+# RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain ${RUST_VERSION}
+# ENV PATH="/root/.cargo/bin:${PATH}"
+
+USER root 
+WORKDIR $HOME  # This sets the working directory to /home/docker
+
+ARG NODEJS_VERSION=16.20.2
+WORKDIR /tmp
+RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.xz" && \
+    tar -xJf "node-v${NODEJS_VERSION}-linux-x64.tar.xz" -C /usr/local --strip-components=1 && \
+    npm install --global yarn pnpm json && \
+    rm "node-v${NODEJS_VERSION}-linux-x64.tar.xz"
+
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Create a new Tauri app using pnpm
+RUN pnpm create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
+
+# Change directory to the newly created Tauri app
+WORKDIR $HOME/my-tauri-app  # This sets the working directory to /app/my-tauri-app
+RUN echo '$HOME' $HOME
+# Install dependencies for the Tauri app
+RUN pnpm install
+
+# Build the Tauri application
+RUN pnpm tauri build  
