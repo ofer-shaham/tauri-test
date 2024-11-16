@@ -23,12 +23,13 @@ RUN sed -i 's/beforeBuildCommand/beforeBuildCommand1/g' /app/my-tauri-app/src-ta
 
 # Change directory to the newly created Tauri app
 WORKDIR /app/my-tauri-app/src-tauri  # This sets the working directory to /app/my-tauri-app
+
 RUN echo '$PWD' $PWD
 RUN ls -la
 # Install dependencies for the Tauri app
 # RUN yarn install
 
 # Build the Tauri application
-RUN cargo tauri build  
+RUN cargo tauri build  --verbose
 
 # WORKDIR /root/app
