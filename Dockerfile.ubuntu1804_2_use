@@ -21,16 +21,17 @@ WORKDIR /app/
 RUN yarn create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
 
 RUN sed -i '9d'  /app/my-tauri-app/src-tauri/tauri.conf.json 
+RUN cat /app/my-tauri-app/src-tauri/tauri.conf.json 
 
 # Change directory to the newly created Tauri app
 WORKDIR /app/my-tauri-app/src-tauri
 
 RUN echo '$PWD' $PWD
+
 RUN ls -la
-# Install dependencies for the Tauri app
 # RUN yarn install
 
 # Build the Tauri application
-RUN cargo tauri build  --verbose
+RUN cargo tauri build  
 
-# WORKDIR /root/app
+WORKDIR /app/my-tauri-app/src-tauri
