@@ -19,7 +19,7 @@ RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION
 # Create a new Tauri app using pnpm
 WORKDIR /app/
 RUN yarn create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
-RUN cargo install tauri-cli --version "^2.0.0" --locked && cargo tauri migrate
+# RUN cargo install tauri-cli --version "^2.0.0" --locked && cargo tauri migrate
 
 RUN sed -i '9d'  /app/my-tauri-app/src-tauri/tauri.conf.json 
 RUN cat /app/my-tauri-app/src-tauri/tauri.conf.json 
