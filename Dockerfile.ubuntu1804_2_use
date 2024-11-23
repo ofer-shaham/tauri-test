@@ -5,7 +5,7 @@ FROM mostuf25562/tauri:1
 # ENV PATH="/root/.cargo/bin:${PATH}"
 
 USER root
-WORKDIR $HOME  # This sets the working directory to /home/docker
+WORKDIR $HOME  
 
 ARG NODEJS_VERSION=16.20.2
 WORKDIR /tmp
