@@ -62,10 +62,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -f Dockerfile.ubuntu1804_2 -t mostuf25562/tauri:1 .
+        run: docker build -f Dockerfile.ubuntu1804_2_use -t mostuf25562/tauri:2 .
 
       - name: Push Docker image
-        run: docker push mostuf25562/tauri:1
+        run: docker push mostuf25562/tauri:2
 
       # - name: Build Docker image
       #   run: docker build -f Dockerfile.centos79.use -t mostuf25562/tauri:2 .
@@ -74,4 +74,4 @@ jobs:
       #   run: docker push mostuf25562/tauri:2
         
       - name: test image
-        run: docker run mostuf25562/tauri:1 ldd --version
+        run: docker run mostuf25562/tauri:2 ldd --version
