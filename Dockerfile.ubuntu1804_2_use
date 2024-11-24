@@ -34,11 +34,11 @@ RUN yarn create tauri-app   --tauri-version 2 tauri2 --yes
 # Change to the app directory
 WORKDIR /app/tauri1
 RUN yarn install
-RUN cd src-tauri && ls -la  &&  run cargo tauri build
+RUN cd src-tauri && ls -la  &&   cargo tauri build
 
 WORKDIR /app/tauri2
 RUN yarn install
-RUN cd src-tauri  run  && ls -la  &&  cargo tauri build
+RUN cd src-tauri && ls -la  &&   cargo tauri build
 
 
 
