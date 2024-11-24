@@ -21,6 +21,8 @@ RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION
     npm install --global yarn json && \
     rm "node-v${NODEJS_VERSION}-linux-x64.tar.xz"
 
+# Set PKG_CONFIG_PATH
+ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
 
 # Create a new Tauri app using pnpm
 WORKDIR /app/
@@ -32,15 +34,15 @@ RUN yarn create tauri-app   --tauri-version 2 tauri2 --yes
 # Change to the app directory
 WORKDIR /app/tauri1
 RUN yarn install
+RUN cd src-tauri && ls -la  &&  run cargo tauri build
+
+WORKDIR /app/tauri2
+RUN yarn install
+RUN cd src-tauri  run  && ls -la  &&  cargo tauri build
 
 
 
-# Set PKG_CONFIG_PATH
-ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
-
-# Build the Tauri application
-# RUN yarn tauri build
-RUN cd src-tauri && ls -la  && echo run cargo tauri build
+ 
 
  
 
