@@ -23,7 +23,7 @@ RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION
 WORKDIR /app/
 RUN cargo install create-tauri-app --locked
  
-RUN tree /app
+RUN ls -la
 RUN cat /app/my-tauri-app/src-tauri/tauri.conf.json 
 
  
