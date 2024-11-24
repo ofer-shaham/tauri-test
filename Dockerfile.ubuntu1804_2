@@ -4,7 +4,11 @@ FROM ubuntu:18.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe/Paris
 ENV TAURI_VERSION=1.6.4
- 
+
+WORKDIR /app
+
+
+
 # Dev tools
 RUN apt-get update && apt-get install -y libwebkit2gtk-4.0-dev build-essential curl libssl-dev gnupg libdbus-1-dev     wget  tree \
     file \
@@ -24,4 +28,3 @@ RUN cargo install tauri-cli --version $TAURI_VERSION --locked
  
 RUN cargo tauri info
 
-WORKDIR /root/app
