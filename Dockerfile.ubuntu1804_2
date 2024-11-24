@@ -1,29 +1,27 @@
 FROM ubuntu:18.04
 
+ 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe/Paris
 ENV TAURI_VERSION=1.6.4
-#1.6.4
+ 
 # Dev tools
-RUN apt-get update && apt-get install -y libwebkit2gtk-4.0-dev build-essential curl libssl-dev gnupg libdbus-1-dev     wget \
+RUN apt-get update && apt-get install -y libwebkit2gtk-4.0-dev build-essential curl libssl-dev gnupg libdbus-1-dev     wget  tree \
     file \
     libgtk-3-dev \
     libayatana-appindicator3-dev \
     librsvg2-dev
 
-# Node
-# RUN curl -sL  https://deb.nodesource.com/setup_18.x | bash -
-# RUN apt-get -y install nodejs
+ 
 
 # Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-# Tauri
-# RUN cargo install tauri-bundler --force
+
 RUN cargo install tauri-cli --version $TAURI_VERSION --locked
-# RUN npm install --unsafe-perm -g tauri
-#############
+ 
+ 
 RUN cargo tauri info
 
 WORKDIR /root/app
