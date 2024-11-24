@@ -20,28 +20,20 @@ RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION
 
 # Create a new Tauri app using pnpm
 WORKDIR /app/
-RUN cargo install create-tauri-app --locked
-RUN cargo build --release --package create-tauri-app --target /app
 
-RUN ls -la
-# RUN cat /app/my-tauri-app/src-tauri/tauri.conf.json 
 
- 
+# Create a new Tauri app using Yarn
+RUN yarn create tauri-app my-tauri-app --yes
 
-# Change directory to the newly created Tauri app
-# WORKDIR /app/my-tauri-app/src-tauri
+# Change to the app directory
+WORKDIR /app/my-tauri-app
 
-RUN echo '$PWD' $PWD
-
-RUN ls -la
- 
-RUN tree /app
+# Install app dependencies
+RUN yarn install
 
 # Build the Tauri application
-RUN cargo tauri build  
+RUN yarn tauri build
 
+# Command to run the application (optional)
+# CMD ["yarn", "tauri", "dev"]
 
-
-#yarn create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
-#RUN cargo install tauri-cli --version "^1.0.0" --locked && cargo tauri migrate
-# RUN sed -i '9d'  /app/my-tauri-app/src-tauri/tauri.conf.json 
