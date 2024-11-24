@@ -39,10 +39,9 @@ ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
 
 # Build the Tauri application
 # RUN yarn tauri build
-RUN cargo tauri build
+RUN cd src-tauri && cargo tauri build
 
-# Install app dependencies
-RUN yarn install
+ 
 
 
 
