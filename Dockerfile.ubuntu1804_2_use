@@ -4,6 +4,7 @@ FROM mostuf25562/tauri:1
 # RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain ${RUST_VERSION}
 # ENV PATH="/root/.cargo/bin:${PATH}"
 
+
 USER root
 WORKDIR /app
 RUN echo "PWD: $PWD"
