@@ -36,9 +36,9 @@ WORKDIR /app/tauri1
 RUN yarn install
 RUN cd src-tauri && ls -la  &&   cargo tauri build
 
-WORKDIR /app/tauri2
-RUN yarn install
-RUN cd src-tauri && ls -la  &&   cargo tauri build
+# WORKDIR /app/tauri2
+# RUN yarn install
+# RUN cd src-tauri && ls -la  &&   cargo tauri build
 
 
 
