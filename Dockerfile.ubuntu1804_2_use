@@ -28,11 +28,23 @@ RUN yarn create tauri-app my-tauri-app --yes
 # Change to the app directory
 WORKDIR /app/my-tauri-app
 
-# Install app dependencies
-RUN yarn install
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    libglib2.0-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set PKG_CONFIG_PATH
+ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
 
 # Build the Tauri application
 RUN yarn tauri build
+
+
+# Install app dependencies
+RUN yarn install
+
+
 
 # Command to run the application (optional)
 # CMD ["yarn", "tauri", "dev"]
