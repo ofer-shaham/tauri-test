@@ -5,7 +5,7 @@ FROM mostuf25562/tauri:1
 # ENV PATH="/root/.cargo/bin:${PATH}"
 
 USER root
-WORKDIR $HOME  
+WORKDIR /app
 RUN echo "PWD: $PWD"
 
 RUN apt-get update && apt-get install tree
@@ -22,10 +22,9 @@ RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION
 # Create a new Tauri app using pnpm
 WORKDIR /app/
 RUN cargo install create-tauri-app --locked
-#yarn create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
-#RUN cargo install tauri-cli --version "^1.0.0" --locked && cargo tauri migrate
+RUN tree
 
-# RUN sed -i '9d'  /app/my-tauri-app/src-tauri/tauri.conf.json 
+
 RUN cat /app/my-tauri-app/src-tauri/tauri.conf.json 
 RUN tree /app
  
@@ -36,9 +35,13 @@ WORKDIR /app/my-tauri-app/src-tauri
 RUN echo '$PWD' $PWD
 
 RUN ls -la
-# RUN yarn install
+ 
 
 # Build the Tauri application
 RUN cargo tauri build  
 
-WORKDIR /app/my-tauri-app/src-tauri
+
+
+#yarn create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
+#RUN cargo install tauri-cli --version "^1.0.0" --locked && cargo tauri migrate
+# RUN sed -i '9d'  /app/my-tauri-app/src-tauri/tauri.conf.json 
