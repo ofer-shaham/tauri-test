@@ -25,7 +25,7 @@ RUN cargo install create-tauri-app --locked
 #yarn create tauri-app my-tauri-app --template react-ts --yes --no-telemetry
 #RUN cargo install tauri-cli --version "^1.0.0" --locked && cargo tauri migrate
 
-RUN sed -i '9d'  /app/my-tauri-app/src-tauri/tauri.conf.json 
+# RUN sed -i '9d'  /app/my-tauri-app/src-tauri/tauri.conf.json 
 RUN cat /app/my-tauri-app/src-tauri/tauri.conf.json 
 RUN tree /app
  
