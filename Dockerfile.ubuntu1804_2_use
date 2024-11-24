@@ -18,23 +18,24 @@ RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION
     rm "node-v${NODEJS_VERSION}-linux-x64.tar.xz"
 
 
-
 # Create a new Tauri app using pnpm
 WORKDIR /app/
 RUN cargo install create-tauri-app --locked
- 
+RUN cargo build --release --package create-tauri-app --target
+
 RUN ls -la
-RUN cat /app/my-tauri-app/src-tauri/tauri.conf.json 
+# RUN cat /app/my-tauri-app/src-tauri/tauri.conf.json 
 
  
 
 # Change directory to the newly created Tauri app
-WORKDIR /app/my-tauri-app/src-tauri
+# WORKDIR /app/my-tauri-app/src-tauri
 
 RUN echo '$PWD' $PWD
 
 RUN ls -la
  
+RUN tree /app
 
 # Build the Tauri application
 RUN cargo tauri build  
