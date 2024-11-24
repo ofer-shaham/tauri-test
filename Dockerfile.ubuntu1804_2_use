@@ -7,9 +7,12 @@ FROM mostuf25562/tauri:1
 
 USER root
 WORKDIR /app
-RUN echo "PWD: $PWD"
 
-RUN apt-get update && apt-get install tree
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    libglib2.0-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
 
 ARG NODEJS_VERSION=16.20.2
 WORKDIR /tmp
@@ -21,26 +24,22 @@ RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION
 
 # Create a new Tauri app using pnpm
 WORKDIR /app/
-
-
+ 
 # Create a new Tauri app using Yarn
 RUN yarn create tauri-app my-tauri-app --yes
 
 # Change to the app directory
 WORKDIR /app/my-tauri-app
+RUN yarn install
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    libglib2.0-dev \
-    pkg-config \
-    && rm -rf /var/lib/apt/lists/*
+
 
 # Set PKG_CONFIG_PATH
 ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
 
 # Build the Tauri application
-RUN yarn tauri build
-
+# RUN yarn tauri build
+RUN cargo tauri build
 
 # Install app dependencies
 RUN yarn install
