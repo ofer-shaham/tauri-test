@@ -3,7 +3,7 @@ FROM mostuf25562/tauri:1
 # ARG RUST_VERSION=1.71.1
 # RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain ${RUST_VERSION}
 # ENV PATH="/root/.cargo/bin:${PATH}"
-
+ 
 
 USER root
 WORKDIR /app
@@ -26,10 +26,11 @@ RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION
 WORKDIR /app/
  
 # Create a new Tauri app using Yarn
-RUN yarn create tauri-app my-tauri-app --yes
+RUN yarn create tauri-app   --tauri-version 1 --help tauri1 --yes
+RUN yarn create tauri-app   --tauri-version 2 --help tauri2 --yes
 
 # Change to the app directory
-WORKDIR /app/my-tauri-app
+WORKDIR /app/tauri1
 RUN yarn install
 
 
