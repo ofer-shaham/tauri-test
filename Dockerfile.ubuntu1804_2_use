@@ -1,8 +1,7 @@
 FROM mostuf25562/tauri:1
 ###################################################
-# ARG RUST_VERSION=1.71.1
-# RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain ${RUST_VERSION}
-# ENV PATH="/root/.cargo/bin:${PATH}"
+# Set PKG_CONFIG_PATH
+ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
  
 
 USER root
@@ -14,40 +13,17 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-ARG NODEJS_VERSION=16.20.2
-WORKDIR /tmp
-RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.xz" && \
-    tar -xJf "node-v${NODEJS_VERSION}-linux-x64.tar.xz" -C /usr/local --strip-components=1 && \
-    npm install --global yarn json && \
-    rm "node-v${NODEJS_VERSION}-linux-x64.tar.xz"
-
-# Set PKG_CONFIG_PATH
-ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
-
 # Create a new Tauri app using pnpm
 WORKDIR /app/
  
 # Create a new Tauri app using Yarn
 RUN yarn create tauri-app   --tauri-version 1 tauri1 --yes
-RUN yarn create tauri-app   --tauri-version 2 tauri2 --yes
+
 
 # Change to the app directory
 WORKDIR /app/tauri1
 RUN yarn install
 RUN cd src-tauri && ls -la  &&   cargo tauri build
 
-# WORKDIR /app/tauri2
-# RUN yarn install
-# RUN cd src-tauri && ls -la  &&   cargo tauri build
 
-
-
- 
-
- 
-
-
-
-# Command to run the application (optional)
-# CMD ["yarn", "tauri", "dev"]
 
