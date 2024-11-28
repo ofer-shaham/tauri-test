@@ -2,7 +2,8 @@ FROM mostuf25562/tauri:1
 ###################################################
 # Set PKG_CONFIG_PATH
 ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
- 
+ARG NODEJS_VERSION=16.20.2
+
 
 USER root
 WORKDIR /app
@@ -12,6 +13,12 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-dev \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /tmp
+RUN curl -SLO "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.xz" && \
+    tar -xJf "node-v${NODEJS_VERSION}-linux-x64.tar.xz" -C /usr/local --strip-components=1 && \
+    npm install --global yarn json && \
+    rm "node-v${NODEJS_VERSION}-linux-x64.tar.xz"
 
 # Create a new Tauri app using pnpm
 WORKDIR /app/
