@@ -4,7 +4,6 @@ FROM mostuf25562/tauri:1
 ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
 ARG NODEJS_VERSION=16.20.2
 
-
 USER root
 WORKDIR /app
 
